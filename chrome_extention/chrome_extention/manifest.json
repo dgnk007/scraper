@@ -1,0 +1,11 @@
+{
+    "name":"scraper",
+    "version":"0.1",
+    "description" :"find the right price",
+    "manifest_version":3,
+    "background":{
+        "service_worker":"background.js"
+    },
+    "permissions":["scripting","activeTab","unlimitedStorage"],
+    "host_permissions":["https://*.amazon.in/"]
+}
