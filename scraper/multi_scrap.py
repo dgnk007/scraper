@@ -1,9 +1,7 @@
 import requests
-import json
-import csv
 from bs4 import BeautifulSoup
 
-pages =list(range(1,21))
+
 # for page in pages:
 #     response = requests.get("https://www.amazon.in/s?k=laptop&page={}".format(page))
 #     soup = BeautifulSoup(response.text, 'html.parser')
@@ -18,15 +16,18 @@ pages =list(range(1,21))
     #     title = soup.find_all("div", {"class": "s-title-instructions-style"})
     #     print(title)
     #     print("______________________")
-search ='laptop'
-content =[]
-for page in pages:
-    response = requests.get("https://www.flipkart.com/search?q={}&page={}".format(search,page))
-    con = BeautifulSoup(response.text, 'html.parser').find_all('div',class_='_2kHMtA')
-    for i in range(len(con)):
-        json_data = {}
-        json_data["title"] = con[i].find('div',class_='_4rR01T').text.encode()
-        json_data["price"] = con[i].find('div',class_='_30jeq3').text[1:].encode()
-        json_data["link"] = 'www.flipkart.com' + con[i].find('a',class_='_1fQZEK').get("href").encode()
-        content.append(json_data)
-print(len(content))
+def flipkartPage(search,start_,end_):
+    pages =list(range(start_,end_))
+    content =[]
+    for page in pages:
+        response = requests.get("https://www.flipkart.com/search?q={}&page={}".format(search,page))
+        con = BeautifulSoup(response.text, 'html.parser').find_all('div',class_='_2kHMtA')
+        for i in range(len(con)):
+            json_data = {}
+            json_data["title"] = con[i].find('div',class_='_4rR01T').text.encode('utf-8')
+            json_data["price"] = con[i].find('div',class_='_30jeq3').text[1:].encode('utf-8').replace(',','')
+            json_data["link"] = 'www.flipkart.com' + con[i].find('a',class_='_1fQZEK').get("href").encode('utf-8')
+            json_data['id'] = json_data['link'].split('/')[-1].split('?')[0]
+            content.append(json_data)
+    return content
+# print(flipkartPage('laptop',1,2))
