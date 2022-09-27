@@ -1,19 +1,5 @@
 import requests
 from bs4 import BeautifulSoup
-# for page in pages:
-#     response = requests.get("https://www.amazon.in/s?k=laptop&page={}".format(page))
-#     soup = BeautifulSoup(response.text, 'html.parser')
-#     con = soup.find_all('div',class_='s-result-item')
-#     for i in range(len(con)):
-#         content =[]
-#         content.append(con[i].text)
-#         len(content)
-        # print(content)
-    # print(content)
-    # for i in range(len(content)):
-    #     title = soup.find_all("div", {"class": "s-title-instructions-style"})
-    #     print(title)
-    #     print("______________________")
 def flipkartPage(search,start_,end_):
     pages =list(range(start_,end_))
     content =[]
@@ -35,3 +21,12 @@ def flipkartPage(search,start_,end_):
             content.append(json_data)
     return content
 # print(flipkartPage('laptop',1,2))
+def amazonPage(search,start_,end_):
+    pages =list(range(start_,end_))
+    for page in pages:
+        response = requests.get("https://www.amazon.in/s?k={}&page={}".format(search,page))
+        print(response)
+        soup = BeautifulSoup(response.text, 'html.parser')
+        con = soup.find_all('div',class_='s-result-item')
+        print(con)
+print(amazonPage('laptop',1,2))
